@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const revealElements = document.querySelectorAll('.reveal');
   if (revealElements.length) {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const siblings = entry.target.parentElement.querySelectorAll('.reveal');
           const idx = Array.from(siblings).indexOf(entry.target);
@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => observer.observe(el));
   }
 
-  /* ── REGISTRATION MULTI-STEP FORM ───── */
-  const registerGrid = document.getElementById('registerGrid');
-  if (registerGrid) {
+  /* ── REGISTRATION PAGE — 6-CARD GRID ── */
+  const regGrid = document.querySelector('.reg-grid');
+  if (regGrid) {
     const formData = {
       childName: '',
       age: null,
@@ -54,113 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: '',
       wilaya: ''
     };
-
-    const cards = registerGrid.querySelectorAll('.step-card');
-
-    function showStep(num) {
-      cards.forEach(card => {
-        card.classList.remove('active-step');
-        if (parseInt(card.dataset.step) === num) {
-          card.classList.add('active-step');
-          if (num === 6) fireConfetti(card);
-        }
-      });
-    }
-
-    function restoreState() {
-      const nameInput = document.getElementById('childName');
-      if (nameInput && formData.childName) nameInput.value = formData.childName;
-
-      document.querySelectorAll('.age-btn').forEach(btn => {
-        btn.classList.toggle('selected', parseInt(btn.dataset.age) === formData.age);
-      });
-
-      document.querySelectorAll('#interestsGrid .selection-card').forEach(card => {
-        card.classList.toggle('selected', formData.interests.includes(card.dataset.value));
-      });
-
-      document.querySelectorAll('#superpowersGrid .selection-card').forEach(card => {
-        card.classList.toggle('selected', formData.superpowers.includes(card.dataset.value));
-      });
-
-      const pName = document.getElementById('regParentName');
-      const pPhone = document.getElementById('regPhone');
-      const pWilaya = document.getElementById('regWilaya');
-      if (pName && formData.parentName) pName.value = formData.parentName;
-      if (pPhone && formData.phone) pPhone.value = formData.phone;
-      if (pWilaya && formData.wilaya) pWilaya.value = formData.wilaya;
-    }
-
-    function saveState() {
-      const nameInput = document.getElementById('childName');
-      if (nameInput) formData.childName = nameInput.value;
-
-      const pName = document.getElementById('regParentName');
-      const pPhone = document.getElementById('regPhone');
-      const pWilaya = document.getElementById('regWilaya');
-      if (pName) formData.parentName = pName.value;
-      if (pPhone) formData.phone = pPhone.value;
-      if (pWilaya) formData.wilaya = pWilaya.value;
-    }
-
-    function validateStep(num) {
-      if (num === 2) {
-        const nameInput = document.getElementById('childName');
-        let valid = true;
-        if (!nameInput.value.trim()) {
-          nameInput.classList.add('error');
-          valid = false;
-          setTimeout(() => nameInput.classList.remove('error'), 600);
-        }
-        if (formData.age === null) {
-          document.querySelectorAll('.age-btn').forEach(b => {
-            b.style.borderColor = '#E74C3C';
-            setTimeout(() => b.style.borderColor = '', 600);
-          });
-          valid = false;
-        }
-        return valid;
-      }
-      if (num === 5) {
-        let valid = true;
-        const pName = document.getElementById('regParentName');
-        const pPhone = document.getElementById('regPhone');
-        const pWilaya = document.getElementById('regWilaya');
-        [pName, pPhone, pWilaya].forEach(el => {
-          if (!el.value.trim()) {
-            el.classList.add('error');
-            valid = false;
-            setTimeout(() => el.classList.remove('error'), 600);
-          }
-        });
-        if (pPhone.value && !/^0[5-7][0-9]{8}$/.test(pPhone.value)) {
-          pPhone.classList.add('error');
-          valid = false;
-          setTimeout(() => pPhone.classList.remove('error'), 600);
-        }
-        return valid;
-      }
-      return true;
-    }
-
-    /* Next / Prev buttons */
-    registerGrid.addEventListener('click', (e) => {
-      const nextBtn = e.target.closest('[data-next]');
-      const prevBtn = e.target.closest('[data-prev]');
-
-      if (nextBtn) {
-        const currentStep = parseInt(nextBtn.closest('.step-card').dataset.step);
-        saveState();
-        if (!validateStep(currentStep)) return;
-        showStep(parseInt(nextBtn.dataset.next));
-        restoreState();
-      }
-      if (prevBtn) {
-        saveState();
-        showStep(parseInt(prevBtn.dataset.prev));
-        restoreState();
-      }
-    });
 
     /* Age picker */
     const agePicker = document.getElementById('agePicker');
@@ -178,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const interestsGrid = document.getElementById('interestsGrid');
     if (interestsGrid) {
       interestsGrid.addEventListener('click', (e) => {
-        const card = e.target.closest('.selection-card');
+        const card = e.target.closest('.reg-select-card');
         if (!card) return;
         card.classList.toggle('selected');
         const val = card.dataset.value;
@@ -194,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const superpowersGrid = document.getElementById('superpowersGrid');
     if (superpowersGrid) {
       superpowersGrid.addEventListener('click', (e) => {
-        const card = e.target.closest('.selection-card');
+        const card = e.target.closest('.reg-select-card');
         if (!card) return;
         card.classList.toggle('selected');
         const val = card.dataset.value;
@@ -205,11 +98,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+
+    /* Fire confetti on card 6 visible */
+    const card6 = regGrid.querySelector('[data-step="6"]');
+    if (card6) {
+      const confettiObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            fireConfetti(card6);
+            confettiObserver.unobserve(card6);
+          }
+        });
+      }, { threshold: 0.3 });
+      confettiObserver.observe(card6);
+    }
   }
 
   /* ── CONFETTI ───────────────────────── */
   function fireConfetti(card) {
-    const container = card.querySelector('#confettiContainer');
+    const container = card.querySelector('#confettiContainer') || card.querySelector('.reg-confetti');
     if (!container) return;
     container.innerHTML = '';
     const colors = ['#F39C12', '#2ECC71', '#3498DB', '#E74C3C', '#8B5CF6'];
