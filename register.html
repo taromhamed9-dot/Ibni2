@@ -12,51 +12,61 @@
 </head>
 <body class="register-page">
 
-<!-- ═══════════════ REGISTRATION SECTION ═══════════════ -->
+<!-- Animated background -->
+<div class="bg-particles" id="bgParticles"></div>
+
+<!-- ═══════════════ REGISTRATION WIZARD ═══════════════ -->
 <section class="reg-section">
-  <!-- Header decorations -->
   <div class="reg-header-area">
-    <img src="img/anas.png" alt="أنس" class="reg-char reg-char-right float-animation" loading="lazy">
-    <img src="img/jouri.png" alt="جوري" class="reg-char reg-char-left float-animation" loading="lazy">
-    <span class="reg-star float-animation">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="#F39C12"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-    </span>
+    <a href="index.html" class="reg-back-link"><i class="fas fa-home"></i> العودة للرئيسية</a>
     <h1 class="reg-main-title">رحلة تسجيل طفلك في منصة <span class="text-blue">إبني</span></h1>
     <p class="reg-main-subtitle">خطوات بسيطة.. رحلة تعليمية مذهلة لطفلك</p>
+    <!-- Progress bar -->
+    <div class="reg-progress">
+      <div class="reg-progress-bar" id="progressBar" style="width:16.6%"></div>
+    </div>
+    <div class="reg-step-indicators">
+      <span class="step-ind active" data-s="1"><i class="fas fa-hand-sparkles"></i></span>
+      <span class="step-ind" data-s="2"><i class="fas fa-child"></i></span>
+      <span class="step-ind" data-s="3"><i class="fas fa-heart"></i></span>
+      <span class="step-ind" data-s="4"><i class="fas fa-bolt"></i></span>
+      <span class="step-ind" data-s="5"><i class="fas fa-phone-alt"></i></span>
+      <span class="step-ind" data-s="6"><i class="fas fa-check-circle"></i></span>
+    </div>
   </div>
 
-  <!-- 6-Card Grid -->
-  <div class="reg-grid container">
+  <div class="reg-wizard-wrap container" id="regWizard">
 
-    <!-- ═══ CARD 1 — مرحباً بك ═══ -->
-    <div class="reg-card" data-step="1">
-      <span class="reg-badge" style="background:#3B82F6">1</span>
-      <h3 class="reg-card-title" style="color:#3B82F6">مرحبا بك في عالم إبني</h3>
-      <div class="reg-card-illust">
-        <img src="img/hero-characters.png" alt="أبطال إبني" loading="lazy" class="float-animation">
+    <!-- ═══ STEP 1 — مرحباً بك ═══ -->
+    <div class="step-card active-step" data-step="1">
+      <div class="step-badge" style="background:#3B82F6">1</div>
+      <div class="step-icon-large" style="color:#3B82F6"><i class="fas fa-door-open"></i></div>
+      <h3 class="step-title" style="color:#3B82F6">مرحبا بك في عالم إبني</h3>
+      <div class="step-illust">
+        <img src="img/hero-characters.png" alt="أبطال إبني" loading="lazy">
       </div>
-      <p class="reg-card-text">مرحبا بك في عائلة إبني! نحن متحمسون لمعرفة المزيد عن بطلنا الصغير لنصنع له رحلة تعليمية تشبهه تماماً</p>
-      <button class="reg-btn-start" data-next="2">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.38-2 2.5-2 3.5 0 2 2.5 2 4 0"/><circle cx="12" cy="8" r="5" fill="none"/></svg>
-        ابدأ الرحلة
+      <p class="step-text">مرحبا بك في عائلة إبني! نحن متحمسون لمعرفة المزيد عن بطلنا الصغير لنصنع له رحلة تعليمية تشبهه تماماً</p>
+      <button class="step-btn-start" data-next="2">
+        <i class="fas fa-rocket"></i> ابدأ الرحلة
       </button>
     </div>
 
-    <!-- ═══ CARD 2 — تعرف على بطلنا ═══ -->
-    <div class="reg-card" data-step="2">
-      <span class="reg-badge" style="background:#22C55E">2</span>
-      <h3 class="reg-card-title" style="color:#22C55E">تعرف على بطلنا</h3>
-      <div class="reg-form-group">
-        <label>ما اسم بطلنا/بطلتنا الصغير؟</label>
+    <!-- ═══ STEP 2 — تعرف على بطلنا ═══ -->
+    <div class="step-card" data-step="2">
+      <div class="step-badge" style="background:#22C55E">2</div>
+      <div class="step-icon-large" style="color:#22C55E"><i class="fas fa-child"></i></div>
+      <h3 class="step-title" style="color:#22C55E">تعرف على بطلنا</h3>
+      <div class="step-form-group">
+        <label><i class="fas fa-pen"></i> ما اسم بطلنا/بطلتنا الصغير؟</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#95A5A6" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <i class="fas fa-user input-icon"></i>
           <input type="text" id="childName" placeholder="اكتب اسم الطفل" required>
         </div>
       </div>
-      <div class="reg-form-group">
-        <label>كم شمعة أطفأ في كعكة ميلاده الأخيرة؟</label>
-        <span class="reg-sub-label">(اختر عمر الطفل)</span>
-        <div class="reg-age-picker" id="agePicker">
+      <div class="step-form-group">
+        <label><i class="fas fa-birthday-cake"></i> كم شمعة أطفأ في كعكة ميلاده الأخيرة؟</label>
+        <span class="step-sub-label">(اختر عمر الطفل)</span>
+        <div class="age-picker" id="agePicker">
           <button type="button" class="age-btn" data-age="5">5</button>
           <button type="button" class="age-btn" data-age="6">6</button>
           <button type="button" class="age-btn" data-age="7">7</button>
@@ -65,186 +75,173 @@
           <button type="button" class="age-btn" data-age="10">10</button>
         </div>
       </div>
-      <div class="reg-card-bottom-chars">
-        <img src="img/anas.png" alt="أنس" loading="lazy" class="float-animation">
-        <img src="img/jouri.png" alt="جوري" loading="lazy" class="float-animation" style="animation-delay:1s">
-      </div>
-      <div class="reg-progress-dots">
-        <span class="rdot rdot-active" style="background:#22C55E"></span>
-        <span class="rdot"></span><span class="rdot"></span><span class="rdot"></span><span class="rdot"></span>
-      </div>
-      <div class="reg-card-nav">
-        <button class="reg-btn-prev" data-prev="1">السابق</button>
-        <button class="reg-btn-next" style="background:#22C55E" data-next="3">التالي</button>
+      <div class="step-nav">
+        <button class="btn-prev" data-prev="1"><i class="fas fa-arrow-right"></i> السابق</button>
+        <button class="btn-next" style="background:#22C55E" data-next="3">التالي <i class="fas fa-arrow-left"></i></button>
       </div>
     </div>
 
-    <!-- ═══ CARD 3 — اهتمامات بطلنا ═══ -->
-    <div class="reg-card" data-step="3">
-      <span class="reg-badge" style="background:#F97316">3</span>
-      <h3 class="reg-card-title" style="color:#F97316">اهتمامات بطلنا</h3>
-      <p class="reg-card-question">إذا تركت الخيارات لبطلنا كيف يفضل قضاء وقته؟</p>
-      <span class="reg-sub-label">(اختر إجابة أو أكثر)</span>
-      <div class="reg-select-grid" id="interestsGrid">
-        <div class="reg-select-card" data-value="blocks">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5"><rect x="3" y="11" width="8" height="8" rx="1"/><rect x="13" y="7" width="8" height="12" rx="1"/><rect x="7" y="3" width="10" height="8" rx="1"/></svg>
+    <!-- ═══ STEP 3 — اهتمامات بطلنا ═══ -->
+    <div class="step-card" data-step="3">
+      <div class="step-badge" style="background:#F97316">3</div>
+      <div class="step-icon-large" style="color:#F97316"><i class="fas fa-heart"></i></div>
+      <h3 class="step-title" style="color:#F97316">اهتمامات بطلنا</h3>
+      <p class="step-question">إذا تركت الخيارات لبطلنا كيف يفضل قضاء وقته؟</p>
+      <span class="step-sub-label">(اختر إجابة أو أكثر)</span>
+      <div class="selection-grid" id="interestsGrid">
+        <div class="selection-card" data-value="blocks">
+          <i class="fas fa-cubes fa-2x" style="color:#F97316"></i>
           <span>تركيب المكعبات وبناء الأبراج</span>
-          <span class="reg-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge"><i class="fas fa-check"></i></span>
         </div>
-        <div class="reg-select-card" data-value="drawing">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18"/><circle cx="11" cy="11" r="2"/></svg>
+        <div class="selection-card" data-value="drawing">
+          <i class="fas fa-palette fa-2x" style="color:#E91E63"></i>
           <span>الرسم والتلوين واكتشاف الألوان</span>
-          <span class="reg-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge"><i class="fas fa-check"></i></span>
         </div>
-        <div class="reg-select-card" data-value="games">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15" cy="10" r="1" fill="#F97316"/><circle cx="18" cy="13" r="1" fill="#F97316"/></svg>
+        <div class="selection-card" data-value="games">
+          <i class="fas fa-gamepad fa-2x" style="color:#3498DB"></i>
           <span>اللعب بالألعاب الرقمية</span>
-          <span class="reg-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge"><i class="fas fa-check"></i></span>
         </div>
-        <div class="reg-select-card" data-value="sports">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M4 17l4-5 3 3 5-7 4 4"/></svg>
+        <div class="selection-card" data-value="sports">
+          <i class="fas fa-futbol fa-2x" style="color:#2ECC71"></i>
           <span>الحركة، الجري، الرياضة الحركية</span>
-          <span class="reg-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge"><i class="fas fa-check"></i></span>
         </div>
       </div>
-      <div class="reg-card-nav">
-        <button class="reg-btn-prev" data-prev="2">السابق</button>
-        <button class="reg-btn-next" style="background:#F97316" data-next="4">التالي</button>
+      <div class="step-nav">
+        <button class="btn-prev" data-prev="2"><i class="fas fa-arrow-right"></i> السابق</button>
+        <button class="btn-next" style="background:#F97316" data-next="4">التالي <i class="fas fa-arrow-left"></i></button>
       </div>
     </div>
 
-    <!-- ═══ CARD 4 — القوة الخارقة ═══ -->
-    <div class="reg-card" data-step="4">
-      <span class="reg-badge" style="background:#8B5CF6">4</span>
-      <h3 class="reg-card-title" style="color:#8B5CF6">القوة الخارقة التي نطمح لها</h3>
-      <p class="reg-card-question">ولي أمر حريص، ما هي القوة الخارقة التي تطمع أن يطورها طفلك معنا في إبني؟</p>
-      <div class="reg-select-grid" id="superpowersGrid">
-        <div class="reg-select-card reg-purple-card" data-value="focus">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5"><path d="M12 2a8 8 0 0 0-8 8c0 3.4 2 6.1 5 7.4V20h6v-2.6c3-1.3 5-4 5-7.4a8 8 0 0 0-8-8z"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>
+    <!-- ═══ STEP 4 — القوة الخارقة ═══ -->
+    <div class="step-card" data-step="4">
+      <div class="step-badge" style="background:#8B5CF6">4</div>
+      <div class="step-icon-large" style="color:#8B5CF6"><i class="fas fa-bolt"></i></div>
+      <h3 class="step-title" style="color:#8B5CF6">القوة الخارقة التي نطمح لها</h3>
+      <p class="step-question">ولي أمر حريص، ما هي القوة الخارقة التي تطمع أن يطورها طفلك معنا في إبني؟</p>
+      <div class="selection-grid" id="superpowersGrid">
+        <div class="selection-card superpower-card" data-value="focus">
+          <i class="fas fa-brain fa-2x" style="color:#8B5CF6"></i>
           <span>التركيز القوي والذكاء المنطقي</span>
-          <span class="reg-check purple"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge purple"><i class="fas fa-check"></i></span>
         </div>
-        <div class="reg-select-card reg-purple-card" data-value="social">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="selection-card superpower-card" data-value="social">
+          <i class="fas fa-users fa-2x" style="color:#3B82F6"></i>
           <span>المهارات الاجتماعية والعمل الجماعي</span>
-          <span class="reg-check purple"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge purple"><i class="fas fa-check"></i></span>
         </div>
-        <div class="reg-select-card reg-purple-card" data-value="tech">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+        <div class="selection-card superpower-card" data-value="tech">
+          <i class="fas fa-lightbulb fa-2x" style="color:#F59E0B"></i>
           <span>دمج التكنولوجيا بالتعلم الذكي</span>
-          <span class="reg-check purple"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge purple"><i class="fas fa-check"></i></span>
         </div>
-        <div class="reg-select-card reg-purple-card" data-value="creativity">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5"><path d="M4.5 16.5c-1.5 1.38-2 2.5-2 3.5 0 2 2.5 2 4 0 1.5-2 .5-3.5 0-4.5"/><path d="M12 2C6.5 2 2 6 2 10c0 1.5.5 2.8 1 4l9 8 9-8c.5-1.2 1-2.5 1-4 0-4-4.5-8-10-8z" fill="none"/></svg>
+        <div class="selection-card superpower-card" data-value="creativity">
+          <i class="fas fa-rocket fa-2x" style="color:#EF4444"></i>
           <span>الإبداع والإبتكار والخيال</span>
-          <span class="reg-check purple"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></span>
+          <span class="check-badge purple"><i class="fas fa-check"></i></span>
         </div>
       </div>
-      <div class="reg-card-nav">
-        <button class="reg-btn-prev" data-prev="3">السابق</button>
-        <button class="reg-btn-next" style="background:#8B5CF6" data-next="5">التالي</button>
+      <div class="step-nav">
+        <button class="btn-prev" data-prev="3"><i class="fas fa-arrow-right"></i> السابق</button>
+        <button class="btn-next" style="background:#8B5CF6" data-next="5">التالي <i class="fas fa-arrow-left"></i></button>
       </div>
     </div>
 
-    <!-- ═══ CARD 5 — وسيلة التواصل ═══ -->
-    <div class="reg-card" data-step="5">
-      <span class="reg-badge" style="background:#3B82F6">5</span>
-      <h3 class="reg-card-title" style="color:#3B82F6">وسيلة التواصل</h3>
-      <p class="reg-card-subtitle">لنرسل لك كل جديد ومحتوى مميز لطفلك</p>
-      <div class="reg-form-group">
+    <!-- ═══ STEP 5 — وسيلة التواصل ═══ -->
+    <div class="step-card" data-step="5">
+      <div class="step-badge" style="background:#3B82F6">5</div>
+      <div class="step-icon-large" style="color:#3B82F6"><i class="fas fa-phone-alt"></i></div>
+      <h3 class="step-title" style="color:#3B82F6">وسيلة التواصل</h3>
+      <p class="step-subtitle-text">لنرسل لك كل جديد ومحتوى مميز لطفلك</p>
+      <div class="step-form-group">
         <label>اسم ولي الأمر</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#95A5A6" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <i class="fas fa-user input-icon"></i>
           <input type="text" id="regParentName" placeholder="اكتب اسمك الكامل" required>
         </div>
       </div>
-      <div class="reg-form-group">
+      <div class="step-form-group">
         <label>رقم الهاتف</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#95A5A6" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.81.32 1.6.57 2.37a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.77.25 1.56.44 2.37.57A2 2 0 0 1 22 16.92z"/></svg>
+          <i class="fas fa-phone input-icon"></i>
           <input type="tel" id="regPhone" placeholder="07 XX XX XX XX" pattern="0[5-7][0-9]{8}" required>
         </div>
       </div>
-      <div class="reg-form-group">
+      <div class="step-form-group">
         <label>الولاية</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#95A5A6" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <i class="fas fa-map-marker-alt input-icon"></i>
           <select id="regWilaya" required>
             <option value="">اختر الولاية</option>
             <option value="01">01 - Adrar</option><option value="02">02 - Chlef</option><option value="03">03 - Laghouat</option><option value="04">04 - Oum El Bouaghi</option><option value="05">05 - Batna</option><option value="06">06 - Béjaïa</option><option value="07">07 - Biskra</option><option value="08">08 - Béchar</option><option value="09">09 - Blida</option><option value="10">10 - Bouira</option><option value="11">11 - Tamanrasset</option><option value="12">12 - Tébessa</option><option value="13">13 - Tlemcen</option><option value="14">14 - Tiaret</option><option value="15">15 - Tizi Ouzou</option><option value="16">16 - Algiers</option><option value="17">17 - Djelfa</option><option value="18">18 - Jijel</option><option value="19">19 - Sétif</option><option value="20">20 - Saïda</option><option value="21">21 - Skikda</option><option value="22">22 - Sidi Bel Abbès</option><option value="23">23 - Annaba</option><option value="24">24 - Guelma</option><option value="25">25 - Constantine</option><option value="26">26 - Médéa</option><option value="27">27 - Mostaganem</option><option value="28">28 - M'Sila</option><option value="29">29 - Mascara</option><option value="30">30 - Ouargla</option><option value="31">31 - Oran</option><option value="32">32 - El Bayadh</option><option value="33">33 - Illizi</option><option value="34">34 - Bordj Bou Arréridj</option><option value="35">35 - Boumerdès</option><option value="36">36 - El Tarf</option><option value="37">37 - Tindouf</option><option value="38">38 - Tissemsilt</option><option value="39">39 - El Oued</option><option value="40">40 - Khenchela</option><option value="41">41 - Souk Ahras</option><option value="42">42 - Tipaza</option><option value="43">43 - Mila</option><option value="44">44 - Aïn Defla</option><option value="45">45 - Naâma</option><option value="46">46 - Aïn Témouchent</option><option value="47">47 - Ghardaïa</option><option value="48">48 - Relizane</option><option value="49">49 - Timimoun</option><option value="50">50 - Bordj Badji Mokhtar</option><option value="51">51 - Ouled Djellal</option><option value="52">52 - Béni Abbès</option><option value="53">53 - In Salah</option><option value="54">54 - In Guezzam</option><option value="55">55 - Touggourt</option><option value="56">56 - Djanet</option><option value="57">57 - El M'Ghair</option><option value="58">58 - El Meniaa</option>
           </select>
         </div>
       </div>
-      <div class="reg-trust-note">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9,12 11,14 15,10"/></svg>
+      <div class="trust-note">
+        <i class="fas fa-shield-alt" style="color:#22C55E"></i>
         <span>معلوماتك آمنة 100% ولا نشاركها مع أي جهة</span>
       </div>
-      <div class="reg-card-nav">
-        <button class="reg-btn-prev" data-prev="4">السابق</button>
-        <button class="reg-btn-next" style="background:#3B82F6" data-next="6">التالي</button>
+      <div class="step-nav">
+        <button class="btn-prev" data-prev="4"><i class="fas fa-arrow-right"></i> السابق</button>
+        <button class="btn-next" style="background:#3B82F6" data-next="6">التالي <i class="fas fa-arrow-left"></i></button>
       </div>
     </div>
 
-    <!-- ═══ CARD 6 — تم بنجاح ═══ -->
-    <div class="reg-card reg-card-success" data-step="6">
-      <span class="reg-badge reg-badge-party" style="background:#22C55E">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-      </span>
-      <div class="reg-confetti" id="confettiContainer"></div>
-      <div class="reg-celebration-img">
-        <img src="img/celebration.png" alt="أبطال إبني يحتفلون" loading="lazy">
+    <!-- ═══ STEP 6 — تم بنجاح ═══ -->
+    <div class="step-card step-success-card" data-step="6">
+      <div class="step-badge step-badge-party" style="background:#22C55E">
+        <i class="fas fa-trophy"></i>
       </div>
-      <div class="reg-success-check">
-        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9,12 11,14 15,10"/></svg>
+      <div class="confetti-container" id="confettiContainer"></div>
+      <div class="success-icon-wrap">
+        <i class="fas fa-check-circle fa-4x" style="color:#22C55E"></i>
       </div>
-      <h3 class="reg-card-title reg-success-title">تم بنجاح!</h3>
-      <div class="reg-success-box">
-        <p class="reg-success-line1">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M4.5 16.5c-1.5 1.38-2 2.5-2 3.5 0 2 2.5 2 4 0"/><circle cx="12" cy="8" r="5" fill="none"/></svg>
-          تم تجهيز ملف البطل بنجاح
-        </p>
-        <p class="reg-success-line2">أرسلنا لك هدية ترحيبية عبر الواتساب تحتوي على نصائح وألعاب تعليمية مجانية!</p>
+      <h3 class="step-title success-title">تم بنجاح!</h3>
+      <div class="success-box">
+        <p class="success-line1"><i class="fas fa-rocket" style="color:#22C55E"></i> تم تجهيز ملف البطل بنجاح</p>
+        <p class="success-line2">أرسلنا لك هدية ترحيبية عبر الواتساب تحتوي على نصائح وألعاب تعليمية مجانية!</p>
       </div>
-      <a href="index.html" class="reg-btn-home">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-        الذهاب للصفحة الرئيسية
+      <a href="index.html" class="btn-home">
+        <i class="fas fa-home"></i> الذهاب للصفحة الرئيسية
       </a>
     </div>
 
-  </div><!-- /reg-grid -->
+  </div>
+</section>
 
-  <!-- ═══════════════ TRUST BAR ═══════════════ -->
-  <div class="reg-trust-bar">
-    <div class="container">
-      <div class="trust-bar-grid">
-        <div class="trust-bar-item">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span class="trust-bar-text">محتوى آمن 100%</span>
-          <span class="trust-bar-sub">خالي من الإعلانات</span>
-        </div>
-        <div class="trust-bar-item">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F39C12" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          <span class="trust-bar-text">تعلم ممتع وتفاعلي</span>
-          <span class="trust-bar-sub">بين الواقع والرقمي</span>
-        </div>
-        <div class="trust-bar-item">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-          <span class="trust-bar-text">تطوير المهارات والقيم</span>
-        </div>
-        <div class="trust-bar-item">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3498DB" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span class="trust-bar-text">متابعة وتقارير دورية</span>
-          <span class="trust-bar-sub">عن تقدم طفلك</span>
-        </div>
-        <div class="trust-bar-item">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-          <span class="trust-bar-text">فريق دعم جاهز</span>
-          <span class="trust-bar-sub">لمساعدتك دائماً</span>
-        </div>
+<!-- ═══════════════ TRUST BAR ═══════════════ -->
+<section class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-grid">
+      <div class="trust-bar-item">
+        <i class="fas fa-shield-alt fa-2x" style="color:#2ECC71"></i>
+        <span class="trust-bar-text">محتوى آمن 100%</span>
+        <span class="trust-bar-sub">خالي من الإعلانات</span>
+      </div>
+      <div class="trust-bar-item">
+        <i class="fas fa-gamepad fa-2x" style="color:#F39C12"></i>
+        <span class="trust-bar-text">تعلم ممتع وتفاعلي</span>
+        <span class="trust-bar-sub">بين الواقع والرقمي</span>
+      </div>
+      <div class="trust-bar-item">
+        <i class="fas fa-star fa-2x" style="color:#F59E0B"></i>
+        <span class="trust-bar-text">تطوير المهارات والقيم</span>
+      </div>
+      <div class="trust-bar-item">
+        <i class="fas fa-chart-bar fa-2x" style="color:#3498DB"></i>
+        <span class="trust-bar-text">متابعة وتقارير دورية</span>
+        <span class="trust-bar-sub">عن تقدم طفلك</span>
+      </div>
+      <div class="trust-bar-item">
+        <i class="fas fa-headset fa-2x" style="color:#8B5CF6"></i>
+        <span class="trust-bar-text">فريق دعم جاهز</span>
+        <span class="trust-bar-sub">لمساعدتك دائماً</span>
       </div>
     </div>
   </div>
-
 </section>
 
 <script src="script.js"></script>

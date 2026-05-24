@@ -4,6 +4,27 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ── BACKGROUND PARTICLES ───────────── */
+  const particleContainer = document.getElementById('bgParticles');
+  if (particleContainer) {
+    const colors = ['#3498DB', '#2ECC71', '#F39C12', '#8B5CF6', '#E74C3C', '#F97316'];
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('span');
+      p.className = 'bg-particle';
+      const size = 20 + Math.random() * 80;
+      const color = colors[i % colors.length];
+      p.style.cssText = `
+        width: ${size}px; height: ${size}px;
+        background: ${color};
+        top: ${Math.random() * 100}%;
+        left: ${Math.random() * 100}%;
+        animation-delay: ${(Math.random() * 10).toFixed(1)}s;
+        animation-duration: ${(10 + Math.random() * 15).toFixed(1)}s;
+      `;
+      particleContainer.appendChild(p);
+    }
+  }
+
   /* ── NAVBAR SCROLL ──────────────────── */
   const navbar = document.getElementById('navbar');
   if (navbar) {
@@ -24,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ── SCROLL REVEAL (Intersection Observer) ── */
+  /* ── SCROLL REVEAL ──────────────────── */
   const revealElements = document.querySelectorAll('.reveal');
   if (revealElements.length) {
     const observer = new IntersectionObserver((entries) => {
@@ -32,9 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (entry.isIntersecting) {
           const siblings = entry.target.parentElement.querySelectorAll('.reveal');
           const idx = Array.from(siblings).indexOf(entry.target);
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, idx * 100);
+          setTimeout(() => entry.target.classList.add('revealed'), idx * 100);
           observer.unobserve(entry.target);
         }
       });
@@ -42,9 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => observer.observe(el));
   }
 
-  /* ── REGISTRATION PAGE — 6-CARD GRID ── */
-  const regGrid = document.querySelector('.reg-grid');
-  if (regGrid) {
+  /* ── REGISTRATION WIZARD (step-by-step) ── */
+  const wizard = document.getElementById('regWizard');
+  if (wizard) {
+    let currentStep = 1;
+    const totalSteps = 6;
+    const cards = wizard.querySelectorAll('.step-card');
+    const progressBar = document.getElementById('progressBar');
+    const indicators = document.querySelectorAll('.step-ind');
+
     const formData = {
       childName: '',
       age: null,
@@ -54,6 +79,112 @@ document.addEventListener('DOMContentLoaded', () => {
       phone: '',
       wilaya: ''
     };
+
+    function showStep(num) {
+      currentStep = num;
+      cards.forEach(c => c.classList.remove('active-step'));
+      const target = wizard.querySelector(`[data-step="${num}"]`);
+      if (target) {
+        target.classList.add('active-step');
+        if (num === 6) fireConfetti(target);
+      }
+      if (progressBar) progressBar.style.width = ((num / totalSteps) * 100) + '%';
+      indicators.forEach(ind => {
+        const s = parseInt(ind.dataset.s);
+        ind.classList.remove('active', 'done');
+        if (s === num) ind.classList.add('active');
+        else if (s < num) ind.classList.add('done');
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function saveState() {
+      const nameInput = document.getElementById('childName');
+      if (nameInput) formData.childName = nameInput.value;
+      const pName = document.getElementById('regParentName');
+      const pPhone = document.getElementById('regPhone');
+      const pWilaya = document.getElementById('regWilaya');
+      if (pName) formData.parentName = pName.value;
+      if (pPhone) formData.phone = pPhone.value;
+      if (pWilaya) formData.wilaya = pWilaya.value;
+    }
+
+    function restoreState() {
+      const nameInput = document.getElementById('childName');
+      if (nameInput && formData.childName) nameInput.value = formData.childName;
+      document.querySelectorAll('.age-btn').forEach(btn => {
+        btn.classList.toggle('selected', parseInt(btn.dataset.age) === formData.age);
+      });
+      document.querySelectorAll('#interestsGrid .selection-card').forEach(card => {
+        card.classList.toggle('selected', formData.interests.includes(card.dataset.value));
+      });
+      document.querySelectorAll('#superpowersGrid .selection-card').forEach(card => {
+        card.classList.toggle('selected', formData.superpowers.includes(card.dataset.value));
+      });
+      const pName = document.getElementById('regParentName');
+      const pPhone = document.getElementById('regPhone');
+      const pWilaya = document.getElementById('regWilaya');
+      if (pName && formData.parentName) pName.value = formData.parentName;
+      if (pPhone && formData.phone) pPhone.value = formData.phone;
+      if (pWilaya && formData.wilaya) pWilaya.value = formData.wilaya;
+    }
+
+    function validateStep(num) {
+      if (num === 2) {
+        const nameInput = document.getElementById('childName');
+        let valid = true;
+        if (!nameInput.value.trim()) {
+          nameInput.classList.add('error');
+          valid = false;
+          setTimeout(() => nameInput.classList.remove('error'), 600);
+        }
+        if (formData.age === null) {
+          document.querySelectorAll('.age-btn').forEach(b => {
+            b.style.borderColor = '#E74C3C';
+            setTimeout(() => b.style.borderColor = '', 600);
+          });
+          valid = false;
+        }
+        return valid;
+      }
+      if (num === 5) {
+        let valid = true;
+        const pName = document.getElementById('regParentName');
+        const pPhone = document.getElementById('regPhone');
+        const pWilaya = document.getElementById('regWilaya');
+        [pName, pPhone, pWilaya].forEach(el => {
+          if (!el.value.trim()) {
+            el.classList.add('error');
+            valid = false;
+            setTimeout(() => el.classList.remove('error'), 600);
+          }
+        });
+        if (pPhone.value && !/^0[5-7][0-9]{8}$/.test(pPhone.value)) {
+          pPhone.classList.add('error');
+          valid = false;
+          setTimeout(() => pPhone.classList.remove('error'), 600);
+        }
+        return valid;
+      }
+      return true;
+    }
+
+    wizard.addEventListener('click', (e) => {
+      const nextBtn = e.target.closest('[data-next]');
+      const prevBtn = e.target.closest('[data-prev]');
+      if (nextBtn) {
+        saveState();
+        const cs = parseInt(nextBtn.closest('.step-card').dataset.step);
+        if (!validateStep(cs)) return;
+        showStep(parseInt(nextBtn.dataset.next));
+        restoreState();
+      }
+      if (prevBtn) {
+        saveState();
+        showStep(parseInt(prevBtn.dataset.prev));
+        restoreState();
+      }
+    });
 
     /* Age picker */
     const agePicker = document.getElementById('agePicker');
@@ -67,11 +198,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    /* Interest cards (multi-select) */
+    /* Interest cards */
     const interestsGrid = document.getElementById('interestsGrid');
     if (interestsGrid) {
       interestsGrid.addEventListener('click', (e) => {
-        const card = e.target.closest('.reg-select-card');
+        const card = e.target.closest('.selection-card');
         if (!card) return;
         card.classList.toggle('selected');
         const val = card.dataset.value;
@@ -83,11 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    /* Superpower cards (multi-select) */
+    /* Superpower cards */
     const superpowersGrid = document.getElementById('superpowersGrid');
     if (superpowersGrid) {
       superpowersGrid.addEventListener('click', (e) => {
-        const card = e.target.closest('.reg-select-card');
+        const card = e.target.closest('.selection-card');
         if (!card) return;
         card.classList.toggle('selected');
         const val = card.dataset.value;
@@ -98,42 +229,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
-
-    /* Fire confetti on card 6 visible */
-    const card6 = regGrid.querySelector('[data-step="6"]');
-    if (card6) {
-      const confettiObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            fireConfetti(card6);
-            confettiObserver.unobserve(card6);
-          }
-        });
-      }, { threshold: 0.3 });
-      confettiObserver.observe(card6);
-    }
   }
 
   /* ── CONFETTI ───────────────────────── */
   function fireConfetti(card) {
-    const container = card.querySelector('#confettiContainer') || card.querySelector('.reg-confetti');
+    const container = card.querySelector('#confettiContainer') || card.querySelector('.confetti-container');
     if (!container) return;
     container.innerHTML = '';
-    const colors = ['#F39C12', '#2ECC71', '#3498DB', '#E74C3C', '#8B5CF6'];
-    for (let i = 0; i < 30; i++) {
+    const colors = ['#F39C12', '#2ECC71', '#3498DB', '#E74C3C', '#8B5CF6', '#F97316', '#22C55E'];
+    for (let i = 0; i < 40; i++) {
       const piece = document.createElement('span');
       piece.className = 'confetti-piece';
       const color = colors[i % colors.length];
-      const isCircle = i % 2 === 0;
-      const size = isCircle ? 8 : 6;
+      const isCircle = i % 3 === 0;
+      const size = isCircle ? 10 : 7;
       piece.style.cssText = `
         left: ${Math.random() * 100}%;
         width: ${size}px;
-        height: ${size}px;
+        height: ${isCircle ? size : size * 1.5}px;
         background: ${color};
-        border-radius: ${isCircle ? '50%' : '0'};
+        border-radius: ${isCircle ? '50%' : '2px'};
         animation-delay: ${(Math.random() * 2.5).toFixed(2)}s;
-        animation-duration: ${(2.5 + Math.random() * 1.5).toFixed(2)}s;
+        animation-duration: ${(2 + Math.random() * 2).toFixed(2)}s;
       `;
       container.appendChild(piece);
     }
