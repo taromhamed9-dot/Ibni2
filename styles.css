@@ -270,11 +270,11 @@ img { max-width: 100%; height: auto; }
 }
 .comparison-header-green { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); color: #2E7D32; }
 .comparison-header-gray { background: #F5F5F5; color: #757575; }
-.comparison-img-wrap {
-  text-align: center; margin-bottom: 16px;
+.comparison-icon-wrap {
+  text-align: center; margin-bottom: 16px; padding: 20px 0;
 }
-.comparison-img-wrap img { width: 120px; }
-.grayscale-img { filter: grayscale(80%) opacity(0.7); }
+.comparison-icon-happy { color: #2ECC71; }
+.comparison-icon-sad { color: #95A5A6; }
 .comparison-list { list-style: none; }
 .comparison-list li {
   display: flex; align-items: center; gap: 10px;
@@ -301,18 +301,25 @@ img { max-width: 100%; height: auto; }
   box-shadow: 0 10px 40px rgba(0,0,0,0.08);
   border: 1px solid #E8F4FD;
 }
+.cta-content-center { text-align: center; }
+.cta-content-center > i { margin-bottom: 16px; }
 .cta-title { font-size: 30px; font-weight: 800; text-align: center; color: #2C3E50; margin-bottom: 8px; }
 .cta-subtitle { font-size: 16px; color: #5D6D7E; text-align: center; margin-bottom: 30px; }
-.cta-grid {
-  display: grid; grid-template-columns: 1fr 2fr 1fr;
-  gap: 30px; align-items: center;
+.btn-register-big {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 48px; font-size: 18px; font-weight: 700;
+  background: linear-gradient(135deg, #2ECC71, #27AE60);
+  color: #FFFFFF; border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(46,204,113,0.35);
+  margin-bottom: 20px;
 }
-.cta-badge {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  text-align: center;
+.btn-register-big:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(46,204,113,0.45); }
+.cta-trust-row {
+  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  font-size: 14px; color: #5D6D7E;
 }
-.cta-badge-title { font-size: 14px; font-weight: 700; color: #2C3E50; }
-.cta-badge-sub { font-size: 12px; color: #7F8C8D; }
+.cta-trust-row span { display: flex; align-items: center; gap: 6px; }
 
 /* ── FORMS ─────────────────────────────── */
 .cta-form {
@@ -345,6 +352,10 @@ input:focus, select:focus {
 input.error, select.error {
   border-color: #E74C3C; animation: shake 0.5s ease;
   box-shadow: 0 0 0 4px rgba(231,76,60,0.1);
+}
+.field-error {
+  display: block; font-size: 12px; color: #E74C3C;
+  margin-top: 4px; min-height: 16px;
 }
 .btn-submit {
   width: 100%; height: 48px;
@@ -421,21 +432,38 @@ input.error, select.error {
 /* ═══════════════════════════════════════
    REGISTRATION PAGE — STEP-BY-STEP WIZARD
    ═══════════════════════════════════════ */
-.register-page { background: linear-gradient(160deg, #F0F8FF 0%, #E3F2FD 50%, #F0F8FF 100%); }
+/* ── REGISTRATION MODAL ───────────────── */
 .text-blue { color: #3498DB; }
-
-.reg-section { min-height: 100vh; padding: 30px 0 0; position: relative; z-index: 1; }
-.reg-header-area {
-  text-align: center; padding: 20px 20px 10px; position: relative;
+.reg-modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+  z-index: 2000; display: none; align-items: center; justify-content: center;
+  padding: 20px; overflow-y: auto;
 }
-.reg-back-link {
-  position: absolute; top: 20px; right: 30px;
-  background: rgba(255,255,255,0.8); padding: 8px 16px;
-  border-radius: 10px; font-size: 13px; font-weight: 600;
-  color: #3498DB; display: inline-flex; align-items: center; gap: 6px;
-  transition: all 0.3s ease; backdrop-filter: blur(5px);
+.reg-modal-overlay.open { display: flex; }
+.reg-modal {
+  background: linear-gradient(160deg, #F0F8FF, #E3F2FD);
+  border-radius: 28px; max-width: 580px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  position: relative; padding: 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: modalSlideIn 0.4s ease;
 }
-.reg-back-link:hover { background: #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: scale(0.9) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.reg-modal-close {
+  position: absolute; top: 16px; left: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); color: #5D6D7E;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; z-index: 10; transition: all 0.3s ease;
+}
+.reg-modal-close:hover { background: #E74C3C; color: #FFFFFF; }
+.reg-modal-header {
+  text-align: center; padding: 28px 24px 10px;
+}
 .reg-main-title {
   font-size: 34px; font-weight: 800; color: #2C3E50; margin-bottom: 8px;
 }

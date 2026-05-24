@@ -61,6 +61,38 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => observer.observe(el));
   }
 
+  /* ── REGISTRATION MODAL ─────────────── */
+  const regModal = document.getElementById('regModal');
+  const closeBtn = document.getElementById('closeRegModal');
+  const closeSuccess = document.getElementById('closeRegSuccess');
+  const openBtns = [
+    document.getElementById('openRegisterNav'),
+    document.getElementById('openRegisterHero'),
+    document.getElementById('openRegisterCTA')
+  ];
+
+  function openModal() {
+    if (regModal) {
+      regModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+  function closeModal() {
+    if (regModal) {
+      regModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  openBtns.forEach(btn => { if (btn) btn.addEventListener('click', openModal); });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (closeSuccess) closeSuccess.addEventListener('click', closeModal);
+  if (regModal) {
+    regModal.addEventListener('click', (e) => {
+      if (e.target === regModal) closeModal();
+    });
+  }
+
   /* ── REGISTRATION WIZARD (step-by-step) ── */
   const wizard = document.getElementById('regWizard');
   if (wizard) {
@@ -95,7 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (s === num) ind.classList.add('active');
         else if (s < num) ind.classList.add('done');
       });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const modal = document.querySelector('.reg-modal');
+      if (modal) modal.scrollTop = 0;
+    }
+
+    function clearErrors() {
+      wizard.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+      wizard.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
     }
 
     function saveState() {
@@ -129,40 +167,88 @@ document.addEventListener('DOMContentLoaded', () => {
       if (pWilaya && formData.wilaya) pWilaya.value = formData.wilaya;
     }
 
+    function isValidName(name) {
+      const trimmed = name.trim();
+      if (trimmed.length < 2) return false;
+      if (/^\d+$/.test(trimmed)) return false;
+      return true;
+    }
+
+    function isValidArabicOrLatinName(name) {
+      const trimmed = name.trim();
+      if (trimmed.length < 2) return false;
+      if (/^\d+$/.test(trimmed)) return false;
+      if (/[!@#$%^&*()_+=\[\]{};'"\\|,.<>?\/~`]/.test(trimmed)) return false;
+      return true;
+    }
+
+    function isValidPhone(phone) {
+      const cleaned = phone.replace(/\s/g, '');
+      return /^0[457][0-9]{8}$/.test(cleaned);
+    }
+
     function validateStep(num) {
+      clearErrors();
       if (num === 2) {
-        const nameInput = document.getElementById('childName');
         let valid = true;
+        const nameInput = document.getElementById('childName');
+        const nameError = document.getElementById('childNameError');
+        const ageError = document.getElementById('ageError');
+
         if (!nameInput.value.trim()) {
           nameInput.classList.add('error');
+          if (nameError) nameError.textContent = 'يرجى كتابة اسم الطفل';
           valid = false;
-          setTimeout(() => nameInput.classList.remove('error'), 600);
+        } else if (!isValidArabicOrLatinName(nameInput.value)) {
+          nameInput.classList.add('error');
+          if (nameError) nameError.textContent = 'يرجى كتابة اسم صحيح (حرفين على الأقل، بدون رموز)';
+          valid = false;
         }
+
         if (formData.age === null) {
+          if (ageError) ageError.textContent = 'يرجى اختيار عمر الطفل';
           document.querySelectorAll('.age-btn').forEach(b => {
             b.style.borderColor = '#E74C3C';
-            setTimeout(() => b.style.borderColor = '', 600);
+            setTimeout(() => b.style.borderColor = '', 800);
           });
           valid = false;
         }
         return valid;
       }
+
       if (num === 5) {
         let valid = true;
         const pName = document.getElementById('regParentName');
         const pPhone = document.getElementById('regPhone');
         const pWilaya = document.getElementById('regWilaya');
-        [pName, pPhone, pWilaya].forEach(el => {
-          if (!el.value.trim()) {
-            el.classList.add('error');
-            valid = false;
-            setTimeout(() => el.classList.remove('error'), 600);
-          }
-        });
-        if (pPhone.value && !/^0[5-7][0-9]{8}$/.test(pPhone.value)) {
-          pPhone.classList.add('error');
+        const nameError = document.getElementById('parentNameError');
+        const phoneError = document.getElementById('phoneError');
+        const wilayaError = document.getElementById('wilayaError');
+
+        if (!pName.value.trim()) {
+          pName.classList.add('error');
+          if (nameError) nameError.textContent = 'يرجى كتابة اسم ولي الأمر';
           valid = false;
-          setTimeout(() => pPhone.classList.remove('error'), 600);
+        } else if (!isValidName(pName.value)) {
+          pName.classList.add('error');
+          if (nameError) nameError.textContent = 'يرجى كتابة اسم صحيح (حرفين على الأقل)';
+          valid = false;
+        }
+
+        if (!pPhone.value.trim()) {
+          pPhone.classList.add('error');
+          if (phoneError) phoneError.textContent = 'يرجى كتابة رقم الهاتف';
+          valid = false;
+        } else if (!isValidPhone(pPhone.value)) {
+          pPhone.classList.add('error');
+          if (phoneError) phoneError.textContent = 'يجب أن يكون 10 أرقام ويبدأ بـ 07 أو 05 أو 04';
+          valid = false;
+        }
+
+        if (!pWilaya.value) {
+          pWilaya.classList.add('error');
+          if (wilayaError) wilayaError.textContent = 'يرجى اختيار الولاية';
+          valid = false;
         }
         return valid;
       }
@@ -254,31 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       container.appendChild(piece);
     }
-  }
-
-  /* ── CTA FORM (index page) ──────────── */
-  const ctaForm = document.getElementById('ctaForm');
-  if (ctaForm) {
-    ctaForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('parentName');
-      const phone = document.getElementById('parentPhone');
-      let valid = true;
-      if (!name.value.trim()) {
-        name.classList.add('error');
-        valid = false;
-        setTimeout(() => name.classList.remove('error'), 600);
-      }
-      if (phone.value && !/^0[5-7][0-9]{8}$/.test(phone.value)) {
-        phone.classList.add('error');
-        valid = false;
-        setTimeout(() => phone.classList.remove('error'), 600);
-      }
-      if (valid) {
-        alert('تم التسجيل بنجاح! سنتواصل معك قريباً');
-        ctaForm.reset();
-      }
-    });
   }
 
 });
